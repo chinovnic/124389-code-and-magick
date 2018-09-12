@@ -1,15 +1,28 @@
 'use strict';
 
-// открыть блок с аватаром
-var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
-
+// цвета мантий
+var blueColor = 'rgb(101, 137, 164)';
+var magentaColor = 'rgb(241, 43, 107)';
+var purpleColor = 'rgb(146, 100, 161)';
+var greenColor = 'rgb(56, 159, 117)';
+var yellowColor = 'rgb(215, 210, 55)';
+var blackColor = 'rgb(0, 0, 0)';
 
 // исходные данные волшебников
 var nameNames = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var nameSurnames = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var coatColor = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var coatColor = [blueColor, magentaColor, purpleColor, greenColor, yellowColor, blackColor];
 var eyesColor = ['black', 'red', 'blue', 'yellow', 'green'];
+
+// работа с DOM
+var userDialog = document.querySelector('.setup');
+var similarListElement = userDialog.querySelector('.setup-similar-list'); // div со списком похожих персонажей
+var similarWizardTemplate = document.querySelector('#similar-wizard-template')
+    .content
+    .querySelector('.setup-similar-item'); // div с шаблоном
+
+userDialog.classList.remove('hidden'); // открыть блок с аватаром
+userDialog.querySelector('.setup-similar').classList.remove('hidden'); // открыть вкладку "Похожие персонажи"
 
 
 // получить рандомное значение из массива
@@ -18,6 +31,7 @@ var getRandomValue = function (items) {
   var randomValue = items[rand];
   return randomValue;
 };
+
 
 // создать рандомного волшебника
 var getRandomWizard = function () {
@@ -37,11 +51,6 @@ while (wizards.length < 4) {
 }
 
 
-var similarListElement = userDialog.querySelector('.setup-similar-list'); // div со списком похожих персонажей
-var similarWizardTemplate = document.querySelector('#similar-wizard-template')
-    .content
-    .querySelector('.setup-similar-item'); // div с шаблоном
-
 var renderWizard = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true); // полностью клонировать шаблон
 
@@ -58,7 +67,3 @@ for (var i = 0; i < wizards.length; i++) {
   fragment.appendChild(renderWizard(wizards[i])); // во фрагмент добавляются волшебники из функции renderWizard
 }
 similarListElement.appendChild(fragment); // вставить фрагмент в div
-
-
-// открыть вкладку "Похожие персонажи"
-userDialog.querySelector('.setup-similar').classList.remove('hidden');
