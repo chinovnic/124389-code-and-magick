@@ -14,6 +14,34 @@ var nameSurnames = ['да Марья', 'Верон', 'Мирабелла', 'Ва
 var coatColor = [blueColor, magentaColor, purpleColor, greenColor, yellowColor, blackColor];
 var eyesColor = ['black', 'red', 'blue', 'yellow', 'green'];
 
+
+// получить рандомное значение из массива
+function getRandomValue(items) {
+  var rand = Math.floor(Math.random() * items.length);
+  var randomValue = items[rand];
+  return randomValue;
+}
+
+// создать рандомного волшебника
+function getRandomWizard() {
+  var randomWizard = {
+    name: getRandomValue(nameNames) + ' ' + getRandomValue(nameSurnames),
+    coatColor: getRandomValue(coatColor),
+    eyesColor: getRandomValue(eyesColor)
+  };
+  return randomWizard;
+}
+
+function renderWizard(wizard) {
+  var wizardElement = similarWizardTemplate.cloneNode(true); // полностью клонировать шаблон
+
+  wizardElement.querySelector('.setup-similar-label').textContent = wizard.name; // добавить имена
+  wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor; // добавить цвет мантий
+  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor; // добавить цвет глаз
+
+  return wizardElement;
+}
+
 // работа с DOM
 var userDialog = document.querySelector('.setup');
 var similarListElement = userDialog.querySelector('.setup-similar-list'); // div со списком похожих персонажей
@@ -25,41 +53,12 @@ userDialog.classList.remove('hidden'); // открыть блок с авата�
 userDialog.querySelector('.setup-similar').classList.remove('hidden'); // открыть вкладку "Похожие персонажи"
 
 
-// получить рандомное значение из массива
-var getRandomValue = function (items) {
-  var rand = Math.floor(Math.random() * items.length);
-  var randomValue = items[rand];
-  return randomValue;
-};
-
-
-// создать рандомного волшебника
-var getRandomWizard = function () {
-  var randomWizard = {
-    name: getRandomValue(nameNames) + ' ' + getRandomValue(nameSurnames),
-    coatColor: getRandomValue(coatColor),
-    eyesColor: getRandomValue(eyesColor)
-  };
-  return randomWizard;
-};
-
 // создать массив из 4 рандомных волшебников
 var wizards = [];
 while (wizards.length < 4) {
   var oneWizard = getRandomWizard();
   wizards.push(oneWizard);
 }
-
-
-var renderWizard = function (wizard) {
-  var wizardElement = similarWizardTemplate.cloneNode(true); // полностью клонировать шаблон
-
-  wizardElement.querySelector('.setup-similar-label').textContent = wizard.name; // добавить имена
-  wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor; // добавить цвет мантий
-  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor; // добавить цвет глаз
-
-  return wizardElement;
-};
 
 // создать фрагмент документа, чтобы добавить в него новые элементы и присоединить к основному дереву
 var fragment = document.createDocumentFragment();
