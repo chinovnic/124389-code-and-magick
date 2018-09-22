@@ -54,11 +54,66 @@ function renderWizard(wizard) {
   return wizardElement;
 }
 
-// создать массив из 4 рандомных волшебников
-var wizards = [];
-while (wizards.length < 4) {
-  var oneWizard = getRandomWizard();
-  wizards.push(oneWizard);
+
+/**
+ * изменение волшебника пользователя
+ * @param {array} array массив со строковыми значениями цветов
+ * @param {object} object часть svg, который нужно покрасить
+ * @param {object} objectInput input, с которым связан svg для передачи значения на сервер
+ */
+function chooseObjectColor(array, object, objectInput) {
+  var color = getRandomValue(array);
+
+  if (object.style.fill === color) {
+    color = getRandomValue(array);
+    object.style.fill = color;
+  } else {
+    object.style.fill = color;
+  }
+  objectInput.value = color;
+}
+
+function onWizardCoatClick() {
+  chooseObjectColor(coatColor, wizardCoat, wizardCoatInput);
+}
+
+
+function onWizardEyesClick() {
+  chooseObjectColor(eyesColor, wizardEyes, wizardEyesInput);
+}
+
+/**
+ * изменение фаербола волшебника пользователя
+ */
+function onWizardFireballClick() {
+  var color = getRandomValue(fireballColor);
+
+  if (wizardFireball.style.backgroundColor === color) {
+    color = getRandomValue(fireballColor);
+    wizardFireball.style.backgroundColor = color;
+  } else {
+    wizardFireball.style.backgroundColor = color;
+  }
+
+  wizardFireballInput.value = color;
+}
+
+
+// открытие и закрытие попапа
+function onPopupEscPress(evt) {
+  if (evt.keyCode === ESC_KEYCODE && userNameInput !== document.activeElement) {
+    closePopup();
+  }
+}
+
+function openPopup() {
+  userDialog.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+}
+
+function closePopup() {
+  userDialog.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
 }
 
 
@@ -84,23 +139,7 @@ var wizardFireballInput = userDialog.querySelector('input[name="fireball-color"]
 userDialog.querySelector('.setup-similar').classList.remove('hidden'); // открыть вкладку "Похожие персонажи"
 
 
-// открытие и закрытие попапа
-function onPopupEscPress(evt) {
-  if (evt.keyCode === ESC_KEYCODE && userNameInput !== document.activeElement) {
-    closePopup();
-  }
-}
-
-function openPopup() {
-  userDialog.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
-}
-
-function closePopup() {
-  userDialog.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
-}
-
+// открытие и закрытие попапа пользователя
 openUserDialog.addEventListener('click', function () {
   openPopup();
 });
@@ -126,40 +165,7 @@ setupClose.addEventListener('keydown', function (evt) {
 });
 
 
-// изменение волшебника пользователя
-function chooseObjectColor(array, object, objectInput) {
-  var color = getRandomValue(array);
-
-  if (object.style.fill === color) {
-    color = getRandomValue(array);
-    object.style.fill = color;
-  } else {
-    object.style.fill = color;
-  }
-  objectInput.value = color;
-}
-
-function onWizardCoatClick() {
-  chooseObjectColor(coatColor, wizardCoat, wizardCoatInput);
-}
-
-function onWizardEyesClick() {
-  chooseObjectColor(eyesColor, wizardEyes, wizardEyesInput);
-}
-
-function onWizardFireballClick() {
-  var color = getRandomValue(fireballColor);
-
-  if (wizardFireball.style.backgroundColor === color) {
-    color = getRandomValue(fireballColor);
-    wizardFireball.style.backgroundColor = color;
-  } else {
-    wizardFireball.style.backgroundColor = color;
-  }
-
-  wizardFireballInput.value = color;
-}
-
+// изменения волшебника пользователя
 wizardCoat.addEventListener('click', onWizardCoatClick);
 wizardEyes.addEventListener('click', onWizardEyesClick);
 wizardFireball.addEventListener('click', onWizardFireballClick);
@@ -177,6 +183,14 @@ userNameInput.addEventListener('invalid', function () {
     userNameInput.setCustomValidity('');
   }
 });
+
+
+// создать массив из 4 рандомных волшебников
+var wizards = [];
+while (wizards.length < 4) {
+  var oneWizard = getRandomWizard();
+  wizards.push(oneWizard);
+}
 
 
 // создать похожих волшебников
